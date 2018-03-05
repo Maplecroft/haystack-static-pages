@@ -1,4 +1,6 @@
-import urllib2
+from __future__ import absolute_import
+from __future__ import print_function
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
 
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -49,20 +51,20 @@ class Command(BaseCommand):
                 else:
                     url = 'http://%s%s' % (Site.objects.get_current().domain, reverse(url))
             
-            print 'Analyzing %s...' % url
+            print('Analyzing %s...' % url)
             
             try:
                 page = StaticPage.objects.get(url=url)
-                print '%s already exists in the index, updating...' % url
+                print('%s already exists in the index, updating...' % url)
             except StaticPage.DoesNotExist:
-                print '%s is new, adding...' % url
+                print('%s is new, adding...' % url)
                 page = StaticPage(url=url)
                 pass
             
             try:
-                html = urllib2.urlopen(url)
-            except urllib2.URLError:
-                print "Error while reading '%s'" % url
+                html = six.moves.urllib.request.urlopen(url)
+            except six.moves.urllib.error.URLError:
+                print("Error while reading '%s'" % url)
                 continue
             
             soup = BeautifulSoup(html)
@@ -80,4 +82,4 @@ class Command(BaseCommand):
             page.save()
             count += 1
 
-        print 'Crawled %d static pages' % count
+        print('Crawled %d static pages' % count)

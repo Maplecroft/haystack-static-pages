@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from django.db import models
 from django.template.defaultfilters import truncatewords_html
 from django.utils.encoding import force_unicode
